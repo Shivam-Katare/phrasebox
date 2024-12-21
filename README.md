@@ -2,6 +2,9 @@
 
 Phrase Box is a user-friendly microcopy management application designed to streamline the creation, organization, and reuse of phrases across projects. Built for developers and content creators, Phrase Box offers powerful features to manage your microcopy effectively.
 
+![image](https://github.com/user-attachments/assets/4d0e5d15-497c-4872-981c-42a74d016470)
+
+
 # Features
 
 - AI-Powered Suggestions
@@ -33,20 +36,17 @@ Phrase Box is a user-friendly microcopy management application designed to strea
 
 ### Steps
 
-**Clone the Repository:
-**
+**Clone the Repository:**
 ```
 git clone https://github.com/your-username/phrase-box.git
 cd phrase-box
 ```
 
-**Install Dependencies:
-**
+**Install Dependencies:**
 
 `npm install`
 
-**Configure Environment Variables:
-**
+**Configure Environment Variables:**
 Create a `.env.local` file and add the following:
 
 ```
@@ -57,8 +57,7 @@ NEXT_PUBLIC_SUPABASE_KEY=""
 NEXT_PUBLIC_GEMINI_API_KEY=""
 ```
 
-**Start the Development Server:
-**
+**Start the Development Server:**
 
 `npm run dev`
 
@@ -67,9 +66,11 @@ Visit http://localhost:3000 to access the app.
 # Usage
 
 - **Log in**: Sign in with your credentials to access the app.
-- **Generate**: You can generate microcopies accoding to your usage with our AI tool.
-- **Explore**: You can explore multiple pre-defined microcopies templates and use them directly into your projects.
-- **Save Microcopies:** Navigate to the "Saves"section to add or manage your phrases.
+- **Generate**: You can generate microcopies according to your usage with our AI tool.
+![image](https://github.com/user-attachments/assets/d2012a86-8747-4867-ad51-40da8023ecfa)
+
+- **Explore**: You can explore multiple pre-defined microcopies templates and use them directly in your projects.
+- **Save Microcopies:** Navigate to the "Saves" section to add or manage your phrases.
 - **Copy and Reuse**: Copy any microcopy with a single click.
 
 # Contribution
