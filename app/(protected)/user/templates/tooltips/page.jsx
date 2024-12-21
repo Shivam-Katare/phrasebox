@@ -48,6 +48,8 @@ export default function TooltipTemplates() {
     await saveMicroCopy(session, tooltip, 'tooltip');
   };
 
+  const tones = [...new Set(tooltipMicroCopy?.map(tooltip => tooltip.tone))];
+
   const filteredTooltips =
     filter === "all"
       ? tooltipMicroCopy
@@ -65,7 +67,16 @@ export default function TooltipTemplates() {
 
       {/* Filters */}
       <div className="flex gap-2 flex-wrap">
-        {["all", "Professional", "Friendly", "Casual", "Technical", "Helpful"].map((tone) => (
+        <Button
+          key="all"
+          variant={filter === "all" ? "default" : "outline"}
+          onClick={() => setFilter("all")}
+          disabled={isLoading}
+          size="sm"
+        >
+          All
+        </Button>
+        {tones.map((tone) => (
           <Button
             key={tone}
             variant={filter === tone ? "default" : "outline"}

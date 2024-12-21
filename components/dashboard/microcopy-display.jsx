@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Input } from "@/components/ui/input"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { CheckIcon, CopyIcon, InfoIcon, Loader2Icon, StarIcon, TrashIcon } from 'lucide-react'
+import { CheckIcon, CopyIcon, InfoIcon, Loader2Icon, RefreshCwIcon, StarIcon, TrashIcon } from 'lucide-react'
 import toast from 'react-hot-toast'
 import useDashboardStore from '@/store/dashboard'
 import { useSession } from '@clerk/nextjs'
@@ -99,41 +99,68 @@ export function MicrocopyDisplay({ purpose, texts, onRegenerate, errorMessage, o
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="space-y-4"
+      className="space-y-6"
     >
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold">{purpose}</h3>
-            <div className="space-x-2">
-              <Button variant="outline" size="icon" onClick={onRegenerate} disabled={isSaving || isDeleting}>
-                ↻
-              </Button>
-            </div>
+      <Card className="border-0 shadow-lg bg-white dark:bg-gray-800 rounded-2xl overflow-hidden">
+        <CardContent className="p-6">
+          <div className="flex justify-between items-center mb-6">
+          <h3 className="text-xl font-semibold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              {purpose}
+            </h3>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={onRegenerate}
+              disabled={isSaving || isDeleting}
+              className="rounded-full h-10 w-10 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+            >
+              <RefreshCwIcon className="h-4 w-4" />
+            </Button>
           </div>
           {errorMessage ? (
-            <Alert variant="destructive">
+            <Alert variant="destructive" className="rounded-lg">
               <AlertDescription>{errorMessage}</AlertDescription>
             </Alert>
           ) : (
-            texts.map((text, index) => (
-              <div key={index} className="mb-4 grid grid-cols-[0.9fr_0.1fr] gap-x-5 items-center">
-                {renderContent(text)}
-                <div className="flex space-x-2">
-                  <Button variant="outline" size="icon" onClick={() => copyToClipboard(text)} disabled={isSaving || isDeleting}>
-                    {copiedStates[text] ? <CheckIcon className="h-4 w-4" /> : <CopyIcon className="h-4 w-4" />}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => savedStates[text] ? handleDeleteClick(text) : handleSaveClick(text)}
-                    disabled={isSaving || isDeleting}
-                  >
-                    {savedStates[text] ? <TrashIcon className="h-4 w-4" /> : <StarIcon className="h-4 w-4" />}
-                  </Button>
+            <div className="space-y-4">
+            {texts.map((text, index) => (
+              <div key={index} className="group relative bg-gray-50 dark:bg-gray-900 rounded-xl p-4 hover:shadow-md transition-all duration-200">
+                <div className="flex justify-between items-center gap-4">
+                  <div className="flex-1">
+                    {renderContent(text)}
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => copyToClipboard(text)}
+                      disabled={isSaving || isDeleting}
+                      className="rounded-full h-9 w-9 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    >
+                      {copiedStates[text] ? (
+                        <CheckIcon className="h-4 w-4 text-green-500" />
+                      ) : (
+                        <CopyIcon className="h-4 w-4" />
+                      )}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => savedStates[text] ? handleDeleteClick(text) : handleSaveClick(text)}
+                      disabled={isSaving || isDeleting}
+                      className="rounded-full h-9 w-9 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    >
+                {savedStates[text] ? (
+                          <TrashIcon className="h-4 w-4 text-red-500" />
+                        ) : (
+                          <StarIcon className="h-4 w-4 text-yellow-500" />
+                        )}
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            ))
+                </div>
+              ))}
+            </div>
           )}
         </CardContent>
       </Card>

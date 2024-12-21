@@ -1,6 +1,6 @@
 import * as React from "react";
 import { usePathname } from "next/navigation";
-import { Carattere } from "next/font/google";
+import { Carattere, Onest } from "next/font/google";
 import {
   Sidebar,
   SidebarContent,
@@ -15,11 +15,9 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { FileText, LayoutDashboard, Save, Bell, AlertCircle, MousePointerClick, LoaderPinwheelIcon, SparklesIcon } from "lucide-react";
+import { FileText, Save, Bell, AlertCircle, MousePointerClick, LoaderPinwheelIcon, SparklesIcon } from "lucide-react";
 import Link from "next/link";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import Image from "next/image";
-import Logo from "@/app/public/logoTwo.svg";
 
 // Sample data
 const data = {
@@ -29,11 +27,6 @@ const data = {
       title: "Start Exploring",
       url: "#",
       items: [
-        {
-          title: "Dashboard",
-          url: "/user/dashboard",
-          icon: LayoutDashboard,
-        },
         {
           title: "Generate",
           url: "/user/generate",
@@ -86,8 +79,7 @@ const data = {
   ],
 };
 
-const carattere = Carattere({ subsets: ["latin"], weight: "400" });
-
+const inter = Onest({ subsets: ["latin"] });
 
 export function AppSidebar({ ...props }) {
   const currentPath = usePathname();
@@ -95,9 +87,7 @@ export function AppSidebar({ ...props }) {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        {/* <VersionSwitcher versions={data.versions} defaultVersion={data.versions[0]} /> */}
-        {/* <Image src={Logo} alt="Phrase Box" width={120} height={40} /> */}
-        <h1 className={`text-[40px] text-center pt-[14px] font-bold text-black ${carattere.className}`}>Phrase Box</h1>
+        <h1 className={`text-[30px] text-center pt-[14px] font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent ${inter.className}`}>Phrase Box</h1>
       </SidebarHeader>
       <SidebarContent>
         {/* Create a SidebarGroup for each parent. */}
@@ -108,9 +98,8 @@ export function AppSidebar({ ...props }) {
               <SidebarMenu>
                 {item.items.map((menuItem) => (
                   <React.Fragment key={menuItem.title}>
-                    {/* If the menu item has sub-items, render them in a collapsible */}
                     {menuItem.subItems ? (
-                      <Collapsible defaultOpen={menuItem.isActive} className="group/collapsible">
+                      <Collapsible defaultOpen={true} className="group/collapsible">
                         <SidebarMenuItem>
                           <CollapsibleTrigger asChild>
                             <SidebarMenuButton isActive={menuItem.isActive || currentPath.startsWith(menuItem.url)}>

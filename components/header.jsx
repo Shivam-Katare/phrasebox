@@ -23,9 +23,6 @@ export function Header() {
             <Link href="#how-it-works" className="text-sm font-medium hover:text-primary">
               How It Works
             </Link>
-            <Link href="#pricing" className="text-sm font-medium hover:text-primary">
-              Pricing
-            </Link>
             <SignedOut>
               <SignInButton mode="modal">
                 <Button variant="default">

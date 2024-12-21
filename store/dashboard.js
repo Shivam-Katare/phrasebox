@@ -1,6 +1,4 @@
 import { create } from 'zustand';
-import toast from 'react-hot-toast';
-import { v4 as uuidv4 } from 'uuid';
 import { createClerkSupabaseClient } from '@/lib/supabaseClient';
 
 const useDashboardStore = create((set, get) => ({

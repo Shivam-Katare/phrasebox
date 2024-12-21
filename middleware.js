@@ -8,7 +8,7 @@ export default clerkMiddleware(async (auth, req) => {
   const { userId } = await auth()
   
   if (userId && req.nextUrl.pathname === '/') {
-    const protectedUrl = new URL('/user/dashboard', req.url)
+    const protectedUrl = new URL('/user/generate', req.url)
     return NextResponse.redirect(protectedUrl)
   }
 

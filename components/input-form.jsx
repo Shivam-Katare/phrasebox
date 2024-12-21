@@ -48,55 +48,122 @@ export function InputForm({ onSubmit, isLoading }) {
   }
 
   return (
+    // <motion.form
+    //   initial={{ opacity: 0, y: 20 }}
+    //   animate={{ opacity: 1, y: 0 }}
+    //   transition={{ duration: 0.5 }}
+    //   onSubmit={handleSubmit}
+    //   className="space-y-4"
+    // >
+    //   <div>
+    //     <Label htmlFor="purpose">Purpose</Label>
+    //     <Select onValueChange={setPurpose}>
+    //       <SelectTrigger>
+    //         <SelectValue placeholder="Select purpose" />
+    //       </SelectTrigger>
+    //       <SelectContent>
+    //         {purposes.map((p) => (
+    //           <SelectItem key={p} value={p}>{p}</SelectItem>
+    //         ))}
+    //       </SelectContent>
+    //     </Select>
+    //   </div>
+    //   <div>
+    //     <Label htmlFor="context">Context</Label>
+    //     <Textarea
+    //       id="context"
+    //       value={context}
+    //       onChange={(e) => setContext(e.target.value)}
+    //       placeholder="Provide context for the microcopy"
+    //       maxLength={100}
+    //     />
+    //   </div>
+    //   <div>
+    //     <Label htmlFor="tone">Tone</Label>
+    //     <Select onValueChange={setTone}>
+    //       <SelectTrigger>
+    //         <SelectValue placeholder="Select tone" />
+    //       </SelectTrigger>
+    //       <SelectContent>
+    //         {tones.map((t) => (
+    //           <SelectItem key={t} value={t}>{t}</SelectItem>
+    //         ))}
+    //       </SelectContent>
+    //     </Select>
+    //   </div>
+    //   <Button type="submit" disabled={isLoading}>
+    //     {isLoading ? (
+    //       <>
+    //         <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+    //         Generating...
+    //       </>
+    //     ) : (
+    //       'Generate Microcopy'
+    //     )}
+    //   </Button>
+    // </motion.form>
     <motion.form
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      onSubmit={handleSubmit}
-      className="space-y-4"
-    >
-      <div>
-        <Label htmlFor="purpose">Purpose</Label>
-        <Select onValueChange={setPurpose}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select purpose" />
-          </SelectTrigger>
-          <SelectContent>
-            {purposes.map((p) => (
-              <SelectItem key={p} value={p}>{p}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div>
-        <Label htmlFor="context">Context</Label>
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    onSubmit={handleSubmit}
+    className="space-y-6"
+  >
+    <div className="space-y-2">
+      <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        Purpose
+      </Label>
+      <Select onValueChange={setPurpose}>
+        <SelectTrigger className="w-full h-11 rounded-lg border border-gray-200 dark:border-gray-700">
+          <SelectValue placeholder="Select purpose" />
+        </SelectTrigger>
+        <SelectContent>
+          {purposes.map((p) => (
+            <SelectItem key={p} value={p}>{p}</SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+
+    <div className="space-y-2">
+        <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Context
+        </Label>
         <Textarea
-          id="context"
           value={context}
           onChange={(e) => setContext(e.target.value)}
           placeholder="Provide context for the microcopy"
+          className="min-h-[100px] rounded-lg border border-gray-200 dark:border-gray-700"
           maxLength={100}
         />
       </div>
-      <div>
-        <Label htmlFor="tone">Tone</Label>
+
+      <div className="space-y-2">
+        <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Tone
+        </Label>
         <Select onValueChange={setTone}>
-          <SelectTrigger>
+          <SelectTrigger className="w-full h-11 rounded-lg border border-gray-200 dark:border-gray-700">
             <SelectValue placeholder="Select tone" />
           </SelectTrigger>
           <SelectContent>
             {tones.map((t) => (
               <SelectItem key={t} value={t}>{t}</SelectItem>
             ))}
-          </SelectContent>
+            </SelectContent>
         </Select>
       </div>
-      <Button type="submit" disabled={isLoading}>
+
+      <Button
+        type="submit"
+        disabled={isLoading}
+        className="w-full h-11 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg transition-all duration-200 ease-in-out"
+      >
         {isLoading ? (
-          <>
+          <div className="flex items-center justify-center">
             <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
-            Generating...
-          </>
+            <span>Generating...</span>
+          </div>
         ) : (
           'Generate Microcopy'
         )}

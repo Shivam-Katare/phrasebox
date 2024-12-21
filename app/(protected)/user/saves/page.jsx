@@ -11,7 +11,7 @@ import { EmptyState } from '@/components/empty-state';
 import useTemplateStore from '@/store/templates';
 import { useSession } from '@clerk/nextjs';
 import { capitalizeFirstLetter } from '@/lib/utils';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import useDashboardStore from '@/store/dashboard';
 
 export default function SavedMicrocopies() {
@@ -53,6 +53,7 @@ export default function SavedMicrocopies() {
     if(session) {
       incrementTotalCopies(session);
     }
+    toast.success('Copied to clipboard!');
   };
 
   const removeMicrocopy = async (itemId) => {

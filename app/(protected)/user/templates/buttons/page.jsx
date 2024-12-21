@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Check, Copy, Star } from 'lucide-react'
 import { cn } from "@/lib/utils"
 import useTemplateStore from "@/store/templates"
 import { useSession } from '@clerk/nextjs'
-import { Toaster } from "react-hot-toast"
+import toast, { Toaster } from "react-hot-toast"
 
 export default function Templates() {
   const { session } = useSession()
@@ -19,14 +18,19 @@ export default function Templates() {
     session && fetchMicroCopy(session, 'button')
   }, [session, fetchMicroCopy])
 
-  const filteredTemplates = filter === "all" ? buttonMicroCopy : buttonMicroCopy.filter(t => t.context === filter)
+  const tones = [...new Set(buttonMicroCopy?.map(button => button.tone))];
+
+  const filteredTemplates =
+  filter === "all"
+    ? buttonMicroCopy
+    : buttonMicroCopy?.filter((button) => button?.tone === filter);
 
   const copyToClipboard = (id, content) => {
     navigator.clipboard.writeText(content).then(() => {
       setCopiedId(id)
       setTimeout(() => setCopiedId(null), 2000)
     }).catch(err => {
-      console.error('Failed to copy: ', err)
+      toast.error('Failed to copy. Please try again.')
     })
   }
 
@@ -37,49 +41,30 @@ export default function Templates() {
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Buttons</h1>
-      <div className="flex space-x-2">
+      <div className="flex gap-2 flex-wrap justify-center">
         <Button
+          key="all"
           variant={filter === "all" ? "default" : "outline"}
           onClick={() => setFilter("all")}
+          className="bg-black text-white"
         >
-          All
+          All Tones
         </Button>
-        <Button
-          variant={filter === "action" ? "default" : "outline"}
-          onClick={() => setFilter("action")}
-        >
-          Action
-        </Button>
-        <Button
-          variant={filter === "submission" ? "default" : "outline"}
-          onClick={() => setFilter("submission")}
-        >
-          Submission
-        </Button>
-        <Button
-          variant={filter === "confirmation" ? "default" : "outline"}
-          onClick={() => setFilter("confirmation")}
-        >
-          Confirmation
-        </Button>
-        <Button
-          variant={filter === "navigation" ? "default" : "outline"}
-          onClick={() => setFilter("navigation")}
-        >
-          Navigation
-        </Button>
-        <Button
-          variant={filter === "exit" ? "default" : "outline"}
-          onClick={() => setFilter("exit")}
-        >
-          Exit
-        </Button>
-        <Button
-          variant={filter === "retry" ? "default" : "outline"}
-          onClick={() => setFilter("retry")}
-        >
-          Retry
-        </Button>
+        {tones.map((tone) => (
+          <Button
+            key={tone}
+            variant={filter === tone ? "default" : "outline"}
+            onClick={() => setFilter(tone)}
+            className={cn(
+              "border transition-all",
+              filter === tone
+                ? "bg-black text-white"
+                : "hover:border-black/50"
+            )}
+          >
+            {tone}
+          </Button>
+        ))}
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filteredTemplates.map((template) => (
@@ -106,7 +91,7 @@ export default function Templates() {
                       'h-5 w-5',
                       savedTemplates.includes(template?.id) &&
                       'fill-primary text-primary'
-                    )}
+                    )} 
                   />
                 </button>
                 <button
