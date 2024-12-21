@@ -1,5 +1,5 @@
-import { Bot, Paintbrush, Share2, Users2 } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Bot, Paintbrush, SaveAll, Telescope } from 'lucide-react'
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function FeaturesSection() {
   return (
@@ -28,7 +28,7 @@ export function FeaturesSection() {
         </Card>
         <Card>
           <CardHeader>
-            <Users2 className="w-12 h-12 text-blue-500 mb-4" />
+            <Telescope className="w-12 h-12 text-blue-500 mb-4" />
             <CardTitle>Explore Templates</CardTitle>
             <CardDescription>
               Explore a library of microcopy templates for various use cases and industries.
@@ -37,7 +37,7 @@ export function FeaturesSection() {
         </Card>
         <Card>
           <CardHeader>
-            <Share2 className="w-12 h-12 text-blue-500 mb-4" />
+            <SaveAll className="w-12 h-12 text-blue-500 mb-4" />
             <CardTitle>Save the Best</CardTitle>
             <CardDescription>
               Save your favorite microcopy templates for quick access and reuse.
