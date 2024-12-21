@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
-import { Menu, X } from "lucide-react";
+import { GitBranch, Menu, X } from "lucide-react";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 export function Header() {
@@ -23,6 +23,11 @@ export function Header() {
             <Link href="#how-it-works" className="text-sm font-medium hover:text-primary">
               How It Works
             </Link>
+
+            <Link href="https://github.com/Shivam-Katare/phrasebox" target="_blank" className="text-sm font-medium hover:text-primary">
+              <GitBranch className="h-6 w-6" />
+            </Link>
+
             <SignedOut>
               <SignInButton mode="modal">
                 <Button variant="default">

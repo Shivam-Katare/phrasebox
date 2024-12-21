@@ -20,7 +20,12 @@ const purposes = [
   "Empty State Messages",
   "Call-to-Action (CTA) Phrases",
   "Loading Messages",
-  "System Warnings"
+  "System Warnings",
+  "Welcome Messages",
+  "Modal Dialog Text",
+  "Progress Indicators",
+  "Navigation Text",
+  "Feedback Messages",
 ]
 
 const tones = [
@@ -132,7 +137,7 @@ export function InputForm({ onSubmit, isLoading }) {
         <Textarea
           value={context}
           onChange={(e) => setContext(e.target.value)}
-          placeholder="Provide context for the microcopy"
+          placeholder="Provide context for the microcopy. Max 100 characters."
           className="min-h-[100px] rounded-lg border border-gray-200 dark:border-gray-700"
           maxLength={100}
         />

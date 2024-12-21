@@ -65,7 +65,7 @@ export default function Generates() {
               />
             ) : (
               <div className="text-center text-gray-600 dark:text-gray-400 flex items-center justify-center h-96">
-                Selects the fields and generate microcopy
+                Select the fields and generate microcopy
               </div>
             )
           }

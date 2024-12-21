@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { createClerkSupabaseClient } from '@/lib/supabaseClient';
+import toast from 'react-hot-toast';
 
 const useDashboardStore = create((set, get) => ({
   isLoading: false,
@@ -14,9 +15,7 @@ const useDashboardStore = create((set, get) => ({
       .from('phrase_box_detail')
       .update({ total_copies: newTotalCopies })
       .eq('id', 1);
-    if (error) {
-      console.error('Failed to update total copies:', error);
-    } else {
+    if (data) {
       set({ totalCopies: newTotalCopies });
     }
   },
@@ -27,8 +26,7 @@ const useDashboardStore = create((set, get) => ({
       .from('phrase_box_detail')
       .update({ total_copies: totalCopies })
       .eq('id', 1);
-    if (error) {
-      console.error('Failed to update total copies:', error);
+    if (data) {
       set((state) => ({ totalCopies: state.totalCopies - 1 }));
     }
   },
@@ -38,9 +36,7 @@ const useDashboardStore = create((set, get) => ({
       .from('phrase_box_detail')
       .select('total_copies')
       .eq('id', 1);
-    if (error) {
-      console.error('Failed to fetch total copies:', error);
-    } else {
+    if (data) {
       set({ totalCopies: data[0]?.total_copies || 0 });
     }
   },
@@ -51,9 +47,7 @@ const useDashboardStore = create((set, get) => ({
       .from('phrase_user_profile_data')
       .select('total_saved, total_copies, recent_activity, saved_microcopies')
       .eq('user_id', userId);
-    if (error) {
-      console.error('Failed to fetch user data:', error);
-    } else {
+    if (data) {
       set({
         totalSaved: data[0]?.total_saved || 0,
         totalCopies: data[0]?.total_copies || 0,
@@ -71,9 +65,7 @@ const useDashboardStore = create((set, get) => ({
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
       .limit(3);
-    if (error) {
-      console.error('Failed to fetch latest microcopies:', error);
-    } else {
+    if (data) {
       set({ latestMicrocopies: data });
     }
   },
@@ -84,9 +76,7 @@ const useDashboardStore = create((set, get) => ({
       .from('phrase_user_profile_data')
       .select('id', { count: 'exact' })
       .eq('user_id', userId);
-    if (error) {
-      console.error('Failed to fetch total saved microcopies:', error);
-    } else {
+    if (data) {
       set({ totalSaved: data.length });
     }
   },

@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Phrase Box
 
-## Getting Started
+Phrase Box is a user-friendly microcopy management application designed to streamline the creation, organization, and reuse of phrases across projects. Built for developers and content creators, Phrase Box offers powerful features to manage your microcopy effectively.
 
-First, run the development server:
+# Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- AI-Powered Suggestions
+- Customizable Tone
+- Explore Templates
+- Save the Best
+
+# Technology Stack
+
+- Frontend: Next.js, React, Tailwind CSS
+- Backend: Supabase (PostgreSQL)
+- Authentication: Clerk for user management
+- State Management: Zustand
+- LLM: Google Gemini
+
+# Libraries:
+
+- react-hot-toast for notifications
+- lucide-react for icons
+- framer-motion for animations
+
+# Setup and Installation
+
+### Prerequisites
+
+- Node.js (v18+)
+- Supabase project
+- Clerk account for authentication
+
+### Steps
+
+**Clone the Repository:
+**
+```
+git clone https://github.com/your-username/phrase-box.git
+cd phrase-box
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Install Dependencies:
+**
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+`npm install`
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+**Configure Environment Variables:
+**
+Create a `.env.local` file and add the following:
 
-## Learn More
+```
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=""
+CLERK_SECRET_KEY=""
+NEXT_PUBLIC_SUPABASE_URL=""
+NEXT_PUBLIC_SUPABASE_KEY=""
+NEXT_PUBLIC_GEMINI_API_KEY=""
+```
 
-To learn more about Next.js, take a look at the following resources:
+**Start the Development Server:
+**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`npm run dev`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Visit http://localhost:3000 to access the app.
 
-## Deploy on Vercel
+# Usage
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Log in**: Sign in with your credentials to access the app.
+- **Generate**: You can generate microcopies accoding to your usage with our AI tool.
+- **Explore**: You can explore multiple pre-defined microcopies templates and use them directly into your projects.
+- **Save Microcopies:** Navigate to the "Saves"section to add or manage your phrases.
+- **Copy and Reuse**: Copy any microcopy with a single click.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+# Contribution
+
+Contributions are welcome! To get started:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix:
+    `git checkout -b feature-name`
+
+3. Commit your changes and push them:
+    `git push origin feature-name`
+
+4. Open a pull request.
+
+# License
+
+Phrase Box is licensed under the MIT License.
+
+# Contact
+
+For any inquiries or feedback, reach out to:
+
+[GitHub](https://github.com/Shivam-Katare "GitHub")
+[Twitter](https://x.com/Shivamkatare_27 "Twitter")
+[LinkedIn](https://www.linkedin.com/in/shivam-katare "LinkedIn")
+

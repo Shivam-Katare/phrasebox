@@ -72,7 +72,7 @@ const useGenerateStore = create((set, get) => ({
       await savePromise;
       set({ isSaving: false });
     } catch (error) {
-      console.error('Error saving microcopy:', error);
+      toast.error('Error saving microcopy. Please try again.');
       set({ isSaving: false });
     }
   },
@@ -94,12 +94,11 @@ const useGenerateStore = create((set, get) => ({
         .single();
   
       if (error) {
-        console.error('Error finding item:', error);
-        throw new Error('Could not find the item to delete');
+        toast.error('Could not find that item');
       }
   
       if (!data) {
-        throw new Error('Item not found');
+        toast.error('Could not find that item');
       }
   
       // Now delete the item
@@ -112,8 +111,7 @@ const useGenerateStore = create((set, get) => ({
         });
   
       if (deleteError) {
-        console.error('Error deleting:', deleteError);
-        throw new Error('Failed to delete item');
+        toast.error('Error deleting microcopy. Please try again.');
       }
   
       toast.success('Microcopy deleted successfully!');
@@ -130,7 +128,6 @@ const useGenerateStore = create((set, get) => ({
         });
       }
     } catch (error) {
-      console.error('Error deleting microcopy:', error);
       toast.error('Error deleting microcopy. Please try again.');
     } finally {
       set({ isDeleting: false });

@@ -19,7 +19,7 @@ import {
 import { cn } from "@/lib/utils";
 import useTemplateStore from "@/store/templates";
 import { useSession } from '@clerk/nextjs';
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import useDashboardStore from "@/store/dashboard";
 
@@ -91,7 +91,7 @@ export default function LoadingTemplates() {
         setTimeout(() => setCopiedId(null), 2000);
       })
       .catch((err) => {
-        console.error("Failed to copy: ", err);
+        toast.error("Failed to copy. Please try again.");
       });
   };
 

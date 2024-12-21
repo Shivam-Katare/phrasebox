@@ -121,7 +121,7 @@ const useTemplateStore = create((set, get) => {
         .eq('user_id', session.user.id);
 
       if (error) {
-        console.error('Error fetching saved microcopies:', error);
+        toast.error('Error fetching saved microcopies. Please try again.');
         return null;
       }
 
