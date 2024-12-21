@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import useTemplateStore from "@/store/templates";
 import { useSession } from '@clerk/nextjs';
 import { Toaster } from "react-hot-toast";
+import useDashboardStore from "@/store/dashboard";
 
 const alertIcons = {
   info: <Info className="text-blue-500" />,
@@ -20,12 +21,15 @@ export default function AlertTemplates() {
   const [copiedId, setCopiedId] = useState(null);
   const [filter, setFilter] = useState("all");
   const { fetchMicroCopy, alertMicroCopy, saveMicroCopy, savedTemplates, isSaving } = useTemplateStore();
+  const { incrementTotalCopies, updateTotalCopies } = useDashboardStore();
 
   const copyToClipboard = (id, content) => {
     navigator.clipboard
       .writeText(content)
       .then(() => {
         setCopiedId(id);
+        incrementTotalCopies();
+        updateTotalCopies(session);
         setTimeout(() => setCopiedId(null), 2000);
       })
       .catch((err) => {

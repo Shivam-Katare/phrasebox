@@ -8,7 +8,7 @@ export function TrendingTemplates({ templates }) {
         <CardTitle>Trending Templates</CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[300px]">
+        <ScrollArea className="h-[200px]">
           {templates.map((template) => (
             <div key={template.id} className="mb-4 p-2 bg-secondary rounded-md">
               <div className="flex justify-between items-center">

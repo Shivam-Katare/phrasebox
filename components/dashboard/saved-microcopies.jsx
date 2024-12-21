@@ -1,10 +1,21 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { CopyIcon } from 'lucide-react'
+import { useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { CopyIcon } from 'lucide-react';
+import useDashboardStore from '@/store/dashboard';
+import { useSession } from '@clerk/nextjs';
 
+export function SavedMicrocopies({ onCopy }) {
+  const { latestMicrocopies, fetchLatestMicrocopies } = useDashboardStore();
+  const { session } = useSession();
 
-export function SavedMicrocopies({ microcopies, onCopy }) {
+  useEffect(() => {
+    if (session) {
+      fetchLatestMicrocopies(session);
+    }
+  }, [session, fetchLatestMicrocopies]);
+
   return (
     <Card>
       <CardHeader>
@@ -12,10 +23,10 @@ export function SavedMicrocopies({ microcopies, onCopy }) {
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-[300px]">
-          {microcopies.map((microcopy) => (
+          {latestMicrocopies?.map((microcopy) => (
             <div key={microcopy.id} className="mb-4 p-2 bg-secondary rounded-md">
-              <div className="text-sm font-semibold mb-1">{microcopy.purpose}</div>
-              <p className="text-sm mb-2">{microcopy.text}</p>
+              <div className="text-sm font-semibold mb-1">{microcopy.category}</div>
+              <p className="text-sm mb-2">{microcopy.content}</p>
               <Button variant="outline" size="sm" onClick={onCopy}>
                 <CopyIcon className="w-4 h-4 mr-2" />
                 Copy
@@ -25,6 +36,6 @@ export function SavedMicrocopies({ microcopies, onCopy }) {
         </ScrollArea>
       </CardContent>
     </Card>
-  )
+  );
 }
 

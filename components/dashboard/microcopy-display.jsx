@@ -8,15 +8,18 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Input } from "@/components/ui/input"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { CheckIcon, CopyIcon, InfoIcon, Loader2Icon, StarIcon, TrashIcon } from 'lucide-react'
+import toast from 'react-hot-toast'
+
 
 export function MicrocopyDisplay({ purpose, texts, onRegenerate, errorMessage, onSave, onDelete, isSaving, isDeleting }) {
-  const [isCopied, setIsCopied] = useState(false);
   const [savedStates, setSavedStates] = useState({});
+  const [copiedStates, setCopiedStates] = useState({});
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
+    setCopiedStates(prev => ({ ...prev, [text]: true }));
+    toast.success('Copied to clipboard!');
+    setTimeout(() => setCopiedStates(prev => ({ ...prev, [text]: false })), 2000);
   };
 
   const handleSaveClick = async (text) => {
@@ -111,16 +114,16 @@ export function MicrocopyDisplay({ purpose, texts, onRegenerate, errorMessage, o
                 {renderContent(text)}
                 <div className="flex space-x-2">
                   <Button variant="outline" size="icon" onClick={() => copyToClipboard(text)} disabled={isSaving || isDeleting}>
-                    {isCopied ? <CheckIcon className="h-4 w-4" /> : <CopyIcon className="h-4 w-4" />}
+                    {copiedStates[text] ? <CheckIcon className="h-4 w-4" /> : <CopyIcon className="h-4 w-4" />}
                   </Button>
                   <Button
-      variant="outline"
-      size="icon"
-      onClick={() => savedStates[text] ? handleDeleteClick(text) : handleSaveClick(text)}
-      disabled={isSaving || isDeleting}
-    >
-      {savedStates[text] ? <TrashIcon className="h-4 w-4" /> : <StarIcon className="h-4 w-4" />}
-    </Button>
+                    variant="outline"
+                    size="icon"
+                    onClick={() => savedStates[text] ? handleDeleteClick(text) : handleSaveClick(text)}
+                    disabled={isSaving || isDeleting}
+                  >
+                    {savedStates[text] ? <TrashIcon className="h-4 w-4" /> : <StarIcon className="h-4 w-4" />}
+                  </Button>
                 </div>
               </div>
             ))

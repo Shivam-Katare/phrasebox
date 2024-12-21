@@ -68,6 +68,11 @@ const data = {
               title: "Error Pages",
               url: "/user/templates/errorpages",
               icon: AlertCircle,
+            },
+            {
+              title: "Welcomes",
+              url: "/user/templates/welcome",
+              icon: Bell,
             }
           ],
         },

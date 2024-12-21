@@ -1,28 +1,25 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { PlusCircleIcon, SearchIcon, ShareIcon } from 'lucide-react'
+import Link from 'next/link'
 
 export function QuickActions() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Quick Actions</CardTitle>
+        <CardTitle>Quick Navigation</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <Button className="w-full">
-          <PlusCircleIcon className="w-4 h-4 mr-2" />
-          Create New Microcopy
+      <CardContent className="grid grid-cols-2 gap-4">
+        <Button asChild variant="outline">
+          <Link href="/generator">Generator</Link>
         </Button>
-        <div className="flex space-x-2">
-          <Input placeholder="Search templates..." />
-          <Button variant="outline">
-            <SearchIcon className="w-4 h-4" />
-          </Button>
-        </div>
-        <Button variant="outline" className="w-full">
-          <ShareIcon className="w-4 h-4 mr-2" />
-          Share with Team
+        <Button asChild variant="outline">
+          <Link href="/saved">Saved Copies</Link>
+        </Button>
+        <Button asChild variant="outline">
+          <Link href="/templates">Templates</Link>
+        </Button>
+        <Button asChild variant="outline">
+          <Link href="/settings">Settings</Link>
         </Button>
       </CardContent>
     </Card>

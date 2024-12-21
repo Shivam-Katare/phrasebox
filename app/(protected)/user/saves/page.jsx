@@ -10,6 +10,7 @@ import { CopyIcon, TrashIcon, FilterIcon, SearchIcon, Loader2Icon } from 'lucide
 import { EmptyState } from '@/components/empty-state';
 import useTemplateStore from '@/store/templates';
 import { useSession } from '@clerk/nextjs';
+import { capitalizeFirstLetter } from '@/lib/utils';
 
 export default function SavedMicrocopies() {
   const { session } = useSession();
@@ -72,7 +73,7 @@ export default function SavedMicrocopies() {
             <SelectContent>
               <SelectItem value="all">All Categories</SelectItem>
               {categories.map(category => (
-                <SelectItem key={category} value={category}>{category}</SelectItem>
+                <SelectItem key={category} value={category}>{capitalizeFirstLetter(category)}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -87,7 +88,7 @@ export default function SavedMicrocopies() {
             <SelectContent>
               <SelectItem value="all">All Tones</SelectItem>
               {tones.map(tone => (
-                <SelectItem key={tone} value={tone}>{tone}</SelectItem>
+                <SelectItem key={tone} value={tone}>{capitalizeFirstLetter(tone)}</SelectItem>
               ))}
             </SelectContent>
           </Select>

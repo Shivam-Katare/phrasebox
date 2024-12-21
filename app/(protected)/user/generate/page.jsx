@@ -1,10 +1,10 @@
 'use client'
 
-import { React } from 'react';
+import { React, useState } from 'react';
 import { InputForm } from '@/components/input-form';
 import { MicrocopyDisplay } from '@/components/dashboard/microcopy-display';
 import { useSession } from '@clerk/nextjs';
-import useDashboardStore from '@/store/dashboard';
+import useGenerateStore from '@/store/generates';
 import { Toaster } from 'react-hot-toast';
 
 export default function Generates() {
@@ -19,13 +19,20 @@ export default function Generates() {
     handleDelete,
     isSaving,
     isDeleting,
-  } = useDashboardStore();
+  } = useGenerateStore();
+
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  const handleFormChange = (isValid) => {
+    setIsFormValid(isValid);
+  };
 
   return (
     <div className="flex flex-1 flex-col gap-4 pt-0">
       <div className="min-h-screen flex-1 rounded-xl bg-muted/50 py-8">
+        <h1 className="px-5 mb-8">Generate a best microcopy according to you!</h1>
         <div className="max-w-2xl mx-auto">
-          <InputForm onSubmit={(data) => handleSubmit(data, session)} isLoading={isLoading} />
+          <InputForm onSubmit={(data) => handleSubmit(data, session)} isLoading={isLoading} onFormChange={handleFormChange} />
           {generatedMicrocopy && (
             <div className="mt-8">
               <MicrocopyDisplay

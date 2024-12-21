@@ -24,7 +24,7 @@ export function OverviewSection({ totalCreated, totalSaved, totalShared, recentA
         </div>
         <h3 className="font-semibold mb-2">Recent Activity</h3>
         <ScrollArea className="h-[200px]">
-          {recentActivity.map((activity) => (
+          {recentActivity?.map((activity) => (
             <div key={activity.id} className="flex justify-between items-center mb-2">
               <span>{activity.action}</span>
               <span className="text-sm text-muted-foreground">{activity.time}</span>

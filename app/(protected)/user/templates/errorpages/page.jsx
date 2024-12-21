@@ -114,8 +114,8 @@ export default function ErrorPageTemplates() {
             variant={filter === tone ? "default" : "outline"}
             onClick={() => setFilter(tone)}
             className={cn(
-              "border-gray-600 text-gray-200 hover:bg-gray-700",
-              filter === tone && "bg-gray-600"
+              "border-black text-black hover:bg-[#e2e8f0]",
+              filter === tone && "bg-black text-white"
             )}
           >
             {tone}
