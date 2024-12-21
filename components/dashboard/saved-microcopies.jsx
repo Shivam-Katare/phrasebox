@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { CopyIcon } from 'lucide-react';
 import useDashboardStore from '@/store/dashboard';
 import { useSession } from '@clerk/nextjs';
+import { capitalizeFirstLetter } from '@/lib/utils';
 
 export function SavedMicrocopies({ onCopy }) {
   const { latestMicrocopies, fetchLatestMicrocopies } = useDashboardStore();
@@ -22,11 +23,11 @@ export function SavedMicrocopies({ onCopy }) {
         <CardTitle>Saved Microcopies</CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[300px]">
+        <ScrollArea className="h-[200px]">
           {latestMicrocopies?.map((microcopy) => (
-            <div key={microcopy.id} className="mb-4 p-2 bg-secondary rounded-md">
-              <div className="text-sm font-semibold mb-1">{microcopy.category}</div>
-              <p className="text-sm mb-2">{microcopy.content}</p>
+            <div key={microcopy?.id} className="mb-4 p-2 bg-secondary rounded-md">
+              <div className="text-sm font-semibold mb-1">{capitalizeFirstLetter(microcopy?.category)}</div>
+              <p className="text-sm mb-2">{capitalizeFirstLetter(microcopy?.content)}</p>
               <Button variant="outline" size="sm" onClick={onCopy}>
                 <CopyIcon className="w-4 h-4 mr-2" />
                 Copy

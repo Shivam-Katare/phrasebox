@@ -9,7 +9,7 @@ export function EmptyState() {
       <h2 className="text-2xl font-semibold mb-2">No saved microcopies</h2>
       <p className="text-gray-500 mb-4">Start saving microcopies to see them here!</p>
       <Button asChild>
-        <Link href="/">Create New Microcopy</Link>
+        <Link href="/user/generate">Create New Microcopy</Link>
       </Button>
     </div>
   )

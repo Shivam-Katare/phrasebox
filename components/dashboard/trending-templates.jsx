@@ -5,7 +5,7 @@ export function TrendingTemplates({ templates }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Trending Templates</CardTitle>
+        <CardTitle>Latest Templates</CardTitle>
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-[200px]">

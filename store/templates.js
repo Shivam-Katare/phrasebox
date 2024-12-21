@@ -51,7 +51,7 @@ const useTemplateStore = create((set, get) => {
 
         return microCopyData;
       } catch (error) {
-        console.error(`Error fetching ${type} microcopy:`, error);
+        toast.error(`Error fetching ${type} microcopy`);
         set({ [`${type}MicroCopy`]: [] });
         return null;
       } finally {
@@ -73,7 +73,7 @@ const useTemplateStore = create((set, get) => {
           updateSavedTemplates(item.id, result.action);
           return true;
         } catch (error) {
-          console.error(`Error saving ${type} microcopy:`, error);
+          toast.error(`Error saving ${type} microcopy`);
           return false;
         } finally {
           set({ isSaving: false, isButtonDisabled: false });
@@ -101,7 +101,7 @@ const useTemplateStore = create((set, get) => {
         set({ savedMicrocopies: data });
         return data;
       } catch (error) {
-        console.error('Error fetching saved microcopies:', error);
+        set({ savedMicrocopies: [] });
         return null;
       } finally {
         set({ isLoading: false });
@@ -128,7 +128,7 @@ const useTemplateStore = create((set, get) => {
       set({ savedMicrocopies: data });
       return data;
     } catch (err) {
-      console.error('Error fetching saved microcopies:', err);
+      set({ savedMicrocopies: [] });
       return null;
     } finally {
       set({ isLoading: false });
@@ -160,7 +160,7 @@ const useTemplateStore = create((set, get) => {
 
       return true;
     } catch (err) {
-      console.error('Error deleting saved microcopy:', err);
+      toast.error('Error deleting saved microcopy');
       return null;
     } finally {
       set({ isSaving: false });

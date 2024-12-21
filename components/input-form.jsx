@@ -25,11 +25,16 @@ const purposes = [
 
 const tones = [
   "Friendly",
-  "Formal",
-  "Neutral",
+  "Professional",
   "Encouraging",
+  "Reassuring",
+  "Concise",
+  "Festival",
+  "Natural",
+  "Humorous",
+  "Technical",
   "Urgent",
-  "Humorous"
+  "Neutral"
 ]
 
 export function InputForm({ onSubmit, isLoading }) {
@@ -70,6 +75,7 @@ export function InputForm({ onSubmit, isLoading }) {
           value={context}
           onChange={(e) => setContext(e.target.value)}
           placeholder="Provide context for the microcopy"
+          maxLength={100}
         />
       </div>
       <div>

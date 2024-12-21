@@ -1,97 +1,81 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Check, Copy, Star, Loader2 } from "lucide-react";
+import {
+  Check,
+  Copy,
+  Star,
+  Loader2,
+  RefreshCw,
+  Clock,
+  Timer,
+  Hourglass,
+  Circle,
+  RotateCw,
+  Orbit,
+  CircleDashedIcon
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import useTemplateStore from "@/store/templates";
 import { useSession } from '@clerk/nextjs';
+import { Toaster } from "react-hot-toast";
+import { motion, AnimatePresence } from "framer-motion";
 
-const loadingTemplates = [
-  // Friendly Tone
-  { id: 1, type: "loading", context: "general", tone: "friendly", content: "Hang tight, we’re getting everything ready for you!" },
-  { id: 2, type: "loading", context: "upload", tone: "friendly", content: "Your files are being uploaded. Almost there!" },
-  { id: 3, type: "loading", context: "download", tone: "friendly", content: "Just a moment, your download is starting!" },
+const loadingIcons = {
+  Friendly: <Loader2 className="h-6 w-6 animate-spin text-cyan-500" />,
+  Professional: <RefreshCw className="h-6 w-6 animate-spin text-indigo-500" />,
+  Encouraging: <RotateCw className="h-6 w-6 animate-spin text-violet-500" />,
+  Reassuring: <Circle className="h-6 w-6 animate-spin text-emerald-500" />,
+  Concise: <CircleDashedIcon className="h-6 w-6 animate-spin text-blue-500" />,
+  Festival: <Orbit className="h-6 w-6 animate-spin text-pink-500" />,
+  Natural: <Hourglass className="h-6 w-6 animate-spin text-teal-500" />,
+  Humorous: <Timer className="h-6 w-6 animate-spin text-amber-500" />,
+  Technical: <RefreshCw className="h-6 w-6 animate-spin text-slate-500" />,
+  Urgent: <Clock className="h-6 w-6 animate-spin text-red-500" />,
+  Neutral: <Loader2 className="h-6 w-6 animate-spin text-gray-500" />
+};
 
-  // Formal Tone
-  { id: 4, type: "loading", context: "general", tone: "formal", content: "Please wait while the system processes your request." },
-  { id: 5, type: "loading", context: "upload", tone: "formal", content: "Uploading in progress. This may take a few moments." },
-  { id: 6, type: "loading", context: "search", tone: "formal", content: "Searching for results. Please remain patient." },
+const toneColors = {
+  Friendly: "bg-gradient-to-br from-cyan-900 to-blue-900",
+  Professional: "bg-gradient-to-br from-indigo-900 to-blue-900",
+  Encouraging: "bg-gradient-to-br from-violet-900 to-purple-900",
+  Reassuring: "bg-gradient-to-br from-emerald-900 to-green-900",
+  Concise: "bg-gradient-to-br from-blue-900 to-indigo-900",
+  Festival: "bg-gradient-to-br from-pink-900 to-purple-900",
+  Natural: "bg-gradient-to-br from-teal-900 to-emerald-900",
+  Humorous: "bg-gradient-to-br from-amber-900 to-orange-900",
+  Technical: "bg-gradient-to-br from-slate-900 to-gray-900",
+  Urgent: "bg-gradient-to-br from-red-900 to-rose-900",
+  Neutral: "bg-gradient-to-br from-gray-900 to-slate-900"
+};
 
-  // Neutral Tone
-  { id: 7, type: "loading", context: "general", tone: "neutral", content: "Loading..." },
-  { id: 8, type: "loading", context: "search", tone: "neutral", content: "Finding the best match for your query." },
-  { id: 9, type: "loading", context: "data", tone: "neutral", content: "Processing data. Please hold on." },
-
-  // Encouraging Tone
-  { id: 10, type: "loading", context: "general", tone: "encouraging", content: "You’re doing great! Just a few more seconds." },
-  { id: 11, type: "loading", context: "progress", tone: "encouraging", content: "Keep up the pace! We’re almost there." },
-  { id: 12, type: "loading", context: "installation", tone: "encouraging", content: "Hang in there, we’re setting things up for you!" },
-
-  // Urgent Tone
-  { id: 13, type: "loading", context: "critical", tone: "urgent", content: "Action required: Please wait while we resolve this quickly." },
-  { id: 14, type: "loading", context: "update", tone: "urgent", content: "Updating critical files. Do not close the application." },
-  { id: 15, type: "loading", context: "network", tone: "urgent", content: "Reconnecting... Please do not close the window." },
-
-  // Humorous Tone
-  { id: 16, type: "loading", context: "general", tone: "humorous", content: "If this takes too long, feel free to grab a snack!" },
-  { id: 17, type: "loading", context: "upload", tone: "humorous", content: "Uploading... Now’s a good time to stretch!" },
-  { id: 18, type: "loading", context: "download", tone: "humorous", content: "Starting your download... Trust us, it’s worth the wait." },
-
-  // Additional Use Cases
-  { id: 19, type: "loading", context: "login", tone: "friendly", content: "Logging you in. Welcome back!" },
-  { id: 20, type: "loading", context: "logout", tone: "neutral", content: "Logging out. See you soon!" },
-  { id: 21, type: "loading", context: "payment", tone: "formal", content: "Processing your payment. Please do not refresh." },
-  { id: 22, type: "loading", context: "search", tone: "encouraging", content: "We’re finding the best results for you. Hang tight!" },
-  { id: 23, type: "loading", context: "update", tone: "friendly", content: "Updating your application. This won’t take long!" },
-  { id: 24, type: "loading", context: "profile", tone: "neutral", content: "Saving your profile settings..." },
-  { id: 25, type: "loading", context: "sync", tone: "neutral", content: "Syncing your data. Please hold on." },
-
-  { id: 26, type: "loading", context: "general", tone: "humorous", content: "Loading... Go ahead, make a coffee." },
-  { id: 27, type: "loading", context: "upload", tone: "friendly", content: "Uploading your memories..." },
-  { id: 28, type: "loading", context: "general", tone: "formal", content: "Please wait while we optimize your experience." },
-  { id: 29, type: "loading", context: "search", tone: "humorous", content: "Searching... Good things come to those who wait." },
-  { id: 30, type: "loading", context: "download", tone: "friendly", content: "Downloading... Almost there!" },
-
-  { id: 31, type: "loading", context: "critical", tone: "urgent", content: "Restoring your data. Do not interrupt the process." },
-  { id: 32, type: "loading", context: "search", tone: "humorous", content: "Results are brewing... Hope you like what we find!" },
-  { id: 33, type: "loading", context: "data", tone: "formal", content: "Analyzing data. Please wait." },
-  { id: 34, type: "loading", context: "payment", tone: "friendly", content: "Processing your payment... Thank you for your patience." },
-  { id: 35, type: "loading", context: "progress", tone: "encouraging", content: "Almost there! Your progress is looking great." },
-  { id: 36, type: "loading", context: "update", tone: "neutral", content: "Installing updates..." },
-  { id: 37, type: "loading", context: "sync", tone: "encouraging", content: "Synchronizing data. Everything is coming together!" },
-  { id: 38, type: "loading", context: "general", tone: "humorous", content: "We’re working hard... You can relax for a bit." },
-
-  { id: 39, type: "loading", context: "general", tone: "formal", content: "Setting up your workspace. Please wait." },
-  { id: 40, type: "loading", context: "sync", tone: "neutral", content: "Your data is being synchronized." },
-  { id: 41, type: "loading", context: "general", tone: "friendly", content: "Preparing your dashboard..." },
-  { id: 42, type: "loading", context: "upload", tone: "encouraging", content: "Uploading... Your files are in good hands!" },
-  { id: 43, type: "loading", context: "payment", tone: "humorous", content: "Counting your pennies... This won’t take long!" },
-  { id: 44, type: "loading", context: "general", tone: "neutral", content: "Loading your preferences..." },
-  { id: 45, type: "loading", context: "progress", tone: "encouraging", content: "Keep going! You’re almost done." },
-  { id: 46, type: "loading", context: "installation", tone: "neutral", content: "Configuring installation files..." },
-  { id: 47, type: "loading", context: "sync", tone: "neutral", content: "Syncing with the server..." },
-  { id: 48, type: "loading", context: "search", tone: "neutral", content: "Scanning the database..." },
-  { id: 49, type: "loading", context: "download", tone: "friendly", content: "Downloading your content..." },
-  { id: 50, type: "loading", context: "update", tone: "neutral", content: "Updating files..." },
-  { id: 51, type: "loading", context: "progress", tone: "encouraging", content: "You're doing great! Let’s finish this up." },
-  { id: 52, type: "loading", context: "data", tone: "formal", content: "Loading analytics. This may take a moment." },
-  { id: 53, type: "loading", context: "login", tone: "friendly", content: "Getting everything ready for you..." },
-  { id: 54, type: "loading", context: "logout", tone: "neutral", content: "Logging out... See you soon!" },
-  { id: 55, type: "loading", context: "payment", tone: "urgent", content: "Processing payment. Do not refresh or close this window." },
-  { id: 56, type: "loading", context: "general", tone: "humorous", content: "Hold tight, the magic is happening behind the scenes!" },
-  { id: 57, type: "loading", context: "critical", tone: "urgent", content: "Recovering your data. Do not interrupt the process." },
-  { id: 58, type: "loading", context: "progress", tone: "encouraging", content: "Stay with us! Your progress is on track." },
-  { id: 59, type: "loading", context: "installation", tone: "formal", content: "Installing components. This may take a few minutes." },
-  { id: 60, type: "loading", context: "update", tone: "humorous", content: "Applying updates... You’re going to love the results!" }
-];
+const pulseAnimation = {
+  initial: { opacity: 0.5, scale: 0.95 },
+  animate: { 
+    opacity: 1, 
+    scale: 1,
+    transition: {
+      duration: 1.5,
+      repeat: Infinity,
+      repeatType: "reverse"
+    }
+  }
+};
 
 export default function LoadingTemplates() {
   const { session } = useSession();
   const [copiedId, setCopiedId] = useState(null);
-  const [hoveredCard, setHoveredCard] = useState(null);
-  const { savedTemplates, saveLoadingTemplate } = useTemplateStore();
+  const [filter, setFilter] = useState("all");
+  const [hoveredId, setHoveredId] = useState(null);
+  const {
+    fetchMicroCopy,
+    loadingMicroCopy,
+    saveMicroCopy,
+    savedTemplates,
+    isLoading,
+    isSaving
+  } = useTemplateStore();
 
   const copyToClipboard = (id, content) => {
     navigator.clipboard
@@ -105,69 +89,160 @@ export default function LoadingTemplates() {
       });
   };
 
-  const toggleSave = async (template) => {
-    const success = await saveLoadingTemplate(session, template);
+  const toggleSave = async (loading) => {
+    await saveMicroCopy(session, loading, 'loading');
   };
 
+  const filteredLoadings =
+    filter === "all"
+      ? loadingMicroCopy
+      : loadingMicroCopy?.filter((loading) => loading?.tone === filter);
+
+  useEffect(() => {
+    if (session) {
+      fetchMicroCopy(session, 'loading');
+    }
+  }, [session, fetchMicroCopy]);
+
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Loading Messages</h1>
+    <div className="min-h-screen p-6 space-y-6">
+      <motion.div 
+        className="text-center mb-8"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h1 className="text-4xl font-bold text-black mb-2">
+          Loading States
+        </h1>
+        <p className="text-black">Design engaging loading experiences</p>
+      </motion.div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {loadingTemplates.map((template) => (
-          <div
-            key={template.id}
+      {/* Filters */}
+      <div className="flex gap-2 flex-wrap justify-center">
+        <Button
+          key="all"
+          variant={filter === "all" ? "default" : "outline"}
+          onClick={() => setFilter("all")}
+          className="bg-blue-600 hover:bg-blue-700 text-white border-none"
+        >
+          All States
+        </Button>
+        {Object.keys(toneColors).map((tone) => (
+          <Button
+            key={tone}
+            variant={filter === tone ? "default" : "outline"}
+            onClick={() => setFilter(tone)}
             className={cn(
-              'relative flex flex-col items-center p-4 rounded-md shadow-sm bg-gray-100 text-gray-800 hover:shadow-lg transition-all duration-300',
-              hoveredCard === String(template.id) && 'scale-[1.02]'
+              "border-blue-500/20 text-blue-100 transition-all",
+              filter === tone
+                ? "bg-blue-600"
+                : "hover:border-blue-400"
             )}
-            onMouseEnter={() => setHoveredCard(String(template.id))}
-            onMouseLeave={() => setHoveredCard(null)}
           >
-            <div className="absolute -top-3 -right-3 z-10">
-              {savedTemplates.includes(template.id) && (
-                <Badge className="bg-yellow-500">Saved</Badge>
-              )}
-            </div>
-
-            <div className="text-center space-y-2">
-              <p className="text-lg font-medium leading-relaxed">
-                {template.content}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {template.context || 'Perfect for general loading states'}
-              </p>
-            </div>
-
-            <div className="flex gap-2 mt-4">
-              <button
-                onClick={() => toggleSave(template)}
-                className={cn(
-                  "hover:text-primary transition-colors",
-                  savedTemplates.includes(template.id) && "text-yellow-500"
-                )}
-              >
-                <Star
-                  className={cn(
-                    "h-5 w-5",
-                    savedTemplates.includes(template.id) && "fill-yellow-500"
-                  )}
-                />
-              </button>
-              <button
-                onClick={() => copyToClipboard(template.id, template.content)}
-                className="hover:text-primary transition-colors"
-              >
-                {copiedId === template.id ? (
-                  <Check className="h-5 w-5 text-green-500" />
-                ) : (
-                  <Copy className="h-5 w-5" />
-                )}
-              </button>
-            </div>
-          </div>
+            {tone}
+          </Button>
         ))}
       </div>
+
+      {/* Loading State */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div 
+            className="text-center py-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="relative w-16 h-16 mx-auto">
+              <div className="absolute inset-0 animate-ping rounded-full bg-blue-400 opacity-25"></div>
+              <div className="relative animate-spin rounded-full border-4 border-blue-500 border-t-transparent w-full h-full"></div>
+            </div>
+            <p className="text-blue-200 mt-4">Loading templates...</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Loading Templates Grid */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {filteredLoadings?.map((loading) => (
+          <motion.div
+            className="group relative"
+            onMouseEnter={() => setHoveredId(loading.id)}
+            onMouseLeave={() => setHoveredId(null)}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            key={loading.id}
+          >
+            <div
+              className={cn(
+                "relative p-6 rounded-xl border border-white/10 shadow-lg transition-all duration-300",
+                toneColors[loading?.tone],
+                hoveredId === loading.id ? "scale-105" : "hover:scale-102"
+              )}
+            >
+              {/* Loading Animation Preview */}
+              <motion.div 
+                className="absolute top-2 right-2 w-8 h-8"
+                variants={pulseAnimation}
+                initial="initial"
+                animate="animate"
+              >
+                {loadingIcons[loading?.tone]}
+              </motion.div>
+
+              {/* Content */}
+              <div className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <span className="text-blue-200 font-medium">{loading?.tone}</span>
+                </div>
+
+                <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4">
+                  <p className="text-white text-lg">
+                    {loading?.content}
+                  </p>
+                </div>
+
+                <div className="text-sm text-blue-200 opacity-80">
+                  {loading?.context}
+                </div>
+
+                {/* Actions */}
+                <div className="flex justify-between items-center">
+                  <Button
+                    onClick={() => toggleSave(loading)}
+                    variant="ghost"
+                    className="text-blue-200 hover:text-white hover:bg-white/10"
+                    disabled={isSaving}
+                  >
+                    <Star className={cn(
+                      "h-5 w-5 mr-2",
+                      savedTemplates.includes(loading?.id) && "fill-yellow-500 text-yellow-500"
+                    )} />
+                    Save
+                  </Button>
+
+                  <Button
+                    onClick={() => copyToClipboard(loading?.id, loading?.content)}
+                    variant="ghost"
+                    className="text-blue-200 hover:text-white hover:bg-white/10"
+                    disabled={isSaving}
+                  >
+                    {copiedId === loading?.id ? (
+                      <Check className="h-5 w-5 mr-2 text-green-400" />
+                    ) : (
+                      <Copy className="h-5 w-5 mr-2" />
+                    )}
+                    Copy
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+    </div>
+      <Toaster />
     </div>
   );
 }

@@ -31,7 +31,7 @@ export default function Templates() {
   }
 
   const toggleSave = async (button) => {
-    await saveMicroCopy(session, button, 'button')
+    await saveMicroCopy(session, button, 'button');
   }
 
   return (
@@ -95,7 +95,10 @@ export default function Templates() {
               <div className="flex gap-2">
                 <button
                   onClick={() => toggleSave(template)}
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                  className={cn(
+                    "text-muted-foreground hover:text-primary transition-colors",
+                    savedTemplates.includes(template?.id) && "text-black"
+                  )}
                   disabled={isButtonDisabled}
                 >
                   <Star
