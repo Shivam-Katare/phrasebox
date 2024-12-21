@@ -19,7 +19,8 @@ import {
 import { cn } from "@/lib/utils";
 import useTemplateStore from "@/store/templates";
 import { useSession } from '@clerk/nextjs';
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import useDashboardStore from "@/store/dashboard";
 
 const welcomeIcons = {
   Friendly: <Hand className="h-6 w-6 text-amber-500" />,
@@ -61,16 +62,20 @@ export default function WelcomeTemplates() {
     isLoading,
     isSaving
   } = useTemplateStore();
+  const { incrementTotalCopies } = useDashboardStore();
 
   const copyToClipboard = (id, content) => {
     navigator.clipboard
       .writeText(content)
       .then(() => {
         setCopiedId(id);
+        if(session) {
+          incrementTotalCopies(session);
+        }
         setTimeout(() => setCopiedId(null), 2000);
       })
       .catch((err) => {
-        console.error("Failed to copy: ", err);
+        toast.error("Failed to copy. Please try again.");
       });
   };
 

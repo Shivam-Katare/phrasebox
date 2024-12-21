@@ -9,15 +9,22 @@ import { Input } from "@/components/ui/input"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { CheckIcon, CopyIcon, InfoIcon, Loader2Icon, StarIcon, TrashIcon } from 'lucide-react'
 import toast from 'react-hot-toast'
+import useDashboardStore from '@/store/dashboard'
+import { useSession } from '@clerk/nextjs'
 
 
 export function MicrocopyDisplay({ purpose, texts, onRegenerate, errorMessage, onSave, onDelete, isSaving, isDeleting }) {
   const [savedStates, setSavedStates] = useState({});
   const [copiedStates, setCopiedStates] = useState({});
+  const { incrementTotalCopies } = useDashboardStore();
+  const session = useSession();
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
     setCopiedStates(prev => ({ ...prev, [text]: true }));
+    if(session) {
+      incrementTotalCopies(session);
+    }
     toast.success('Copied to clipboard!');
     setTimeout(() => setCopiedStates(prev => ({ ...prev, [text]: false })), 2000);
   };

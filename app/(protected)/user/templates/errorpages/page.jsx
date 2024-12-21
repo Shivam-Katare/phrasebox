@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import useTemplateStore from "@/store/templates";
 import { useSession } from '@clerk/nextjs';
 import { Toaster } from "react-hot-toast";
+import useDashboardStore from "@/store/dashboard";
 
 const errorIcons = {
   "404": <FileX className="h-8 w-8" />,
@@ -56,12 +57,16 @@ export default function ErrorPageTemplates() {
     isLoading,
     isSaving 
   } = useTemplateStore();
+  const { incrementTotalCopies } = useDashboardStore();
 
   const copyToClipboard = (id, content) => {
     navigator.clipboard
       .writeText(content)
       .then(() => {
         setCopiedId(id);
+        if(session) {
+          incrementTotalCopies(session);
+        }
         setTimeout(() => setCopiedId(null), 2000);
       })
       .catch((err) => {
@@ -114,7 +119,7 @@ export default function ErrorPageTemplates() {
             variant={filter === tone ? "default" : "outline"}
             onClick={() => setFilter(tone)}
             className={cn(
-              "border-black text-black hover:bg-[#e2e8f0]",
+              "border-black text-black hover:bg-[#b7bec4]",
               filter === tone && "bg-black text-white"
             )}
           >

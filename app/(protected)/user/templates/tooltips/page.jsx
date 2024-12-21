@@ -13,6 +13,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import useDashboardStore from "@/store/dashboard";
 
 export default function TooltipTemplates() {
   const { session } = useSession();
@@ -26,12 +27,16 @@ export default function TooltipTemplates() {
     isLoading,
     isSaving 
   } = useTemplateStore();
+  const { incrementTotalCopies } = useDashboardStore();
 
   const copyToClipboard = (id, content) => {
     navigator.clipboard
       .writeText(content)
       .then(() => {
         setCopiedId(id);
+        if(session) {
+          incrementTotalCopies(session);
+        }
         setTimeout(() => setCopiedId(null), 2000);
       })
       .catch((err) => {

@@ -11,10 +11,13 @@ import { EmptyState } from '@/components/empty-state';
 import useTemplateStore from '@/store/templates';
 import { useSession } from '@clerk/nextjs';
 import { capitalizeFirstLetter } from '@/lib/utils';
+import { Toaster } from 'react-hot-toast';
+import useDashboardStore from '@/store/dashboard';
 
 export default function SavedMicrocopies() {
   const { session } = useSession();
   const { savedMicrocopies, fetchSavedMicrocopies, deleteSavedMicrocopy, isLoading } = useTemplateStore();
+  const { incrementTotalCopies } = useDashboardStore();
   const [filteredMicrocopies, setFilteredMicrocopies] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState('');
   const [toneFilter, setToneFilter] = useState('');
@@ -47,13 +50,13 @@ export default function SavedMicrocopies() {
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
+    if(session) {
+      incrementTotalCopies(session);
+    }
   };
 
   const removeMicrocopy = async (itemId) => {
-    const success = await deleteSavedMicrocopy(session, itemId);
-    if (success) {
-      // No need to update local state, as it is managed globally in the store
-    }
+    deleteSavedMicrocopy(session, itemId);
   };
 
   const categories = Array.from(new Set(savedMicrocopies.map(m => m.category)));
@@ -206,6 +209,7 @@ export default function SavedMicrocopies() {
           </motion.div>
         )}
       </div>
+      <Toaster />
     </div>
   );
 }

@@ -6,7 +6,7 @@ import { Check, Copy, Star, Info, AlertTriangle, CheckCircle } from "lucide-reac
 import { cn } from "@/lib/utils";
 import useTemplateStore from "@/store/templates";
 import { useSession } from '@clerk/nextjs';
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import useDashboardStore from "@/store/dashboard";
 
 const alertIcons = {
@@ -21,19 +21,20 @@ export default function AlertTemplates() {
   const [copiedId, setCopiedId] = useState(null);
   const [filter, setFilter] = useState("all");
   const { fetchMicroCopy, alertMicroCopy, saveMicroCopy, savedTemplates, isSaving } = useTemplateStore();
-  const { incrementTotalCopies, updateTotalCopies } = useDashboardStore();
+  const { incrementTotalCopies } = useDashboardStore();
 
   const copyToClipboard = (id, content) => {
     navigator.clipboard
       .writeText(content)
       .then(() => {
         setCopiedId(id);
-        incrementTotalCopies();
-        updateTotalCopies(session);
+        if(session) {
+          incrementTotalCopies(session);
+        }
         setTimeout(() => setCopiedId(null), 2000);
       })
       .catch((err) => {
-        console.error("Failed to copy: ", err);
+        toast.error("Failed to copy. Please try again.");
       });
   };
 

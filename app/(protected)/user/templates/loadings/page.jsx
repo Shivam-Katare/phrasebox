@@ -21,33 +21,34 @@ import useTemplateStore from "@/store/templates";
 import { useSession } from '@clerk/nextjs';
 import { Toaster } from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
+import useDashboardStore from "@/store/dashboard";
 
 const loadingIcons = {
-  Friendly: <Loader2 className="h-6 w-6 animate-spin text-cyan-500" />,
-  Professional: <RefreshCw className="h-6 w-6 animate-spin text-indigo-500" />,
-  Encouraging: <RotateCw className="h-6 w-6 animate-spin text-violet-500" />,
-  Reassuring: <Circle className="h-6 w-6 animate-spin text-emerald-500" />,
-  Concise: <CircleDashedIcon className="h-6 w-6 animate-spin text-blue-500" />,
-  Festival: <Orbit className="h-6 w-6 animate-spin text-pink-500" />,
-  Natural: <Hourglass className="h-6 w-6 animate-spin text-teal-500" />,
-  Humorous: <Timer className="h-6 w-6 animate-spin text-amber-500" />,
-  Technical: <RefreshCw className="h-6 w-6 animate-spin text-slate-500" />,
-  Urgent: <Clock className="h-6 w-6 animate-spin text-red-500" />,
-  Neutral: <Loader2 className="h-6 w-6 animate-spin text-gray-500" />
+  Friendly: <Loader2 className="h-6 w-6 animate-spin text-cyan-400" />,
+  Professional: <RefreshCw className="h-6 w-6 animate-spin text-indigo-400" />,
+  Encouraging: <RotateCw className="h-6 w-6 animate-spin text-violet-400" />,
+  Reassuring: <Circle className="h-6 w-6 animate-spin text-emerald-400" />,
+  Concise: <CircleDashedIcon className="h-6 w-6 animate-spin text-blue-400" />,
+  Festival: <Orbit className="h-6 w-6 animate-spin text-pink-400" />,
+  Natural: <Hourglass className="h-6 w-6 animate-spin text-teal-400" />,
+  Humorous: <Timer className="h-6 w-6 animate-spin text-amber-400" />,
+  Technical: <RefreshCw className="h-6 w-6 animate-spin text-slate-400" />,
+  Urgent: <Clock className="h-6 w-6 animate-spin text-red-400" />,
+  Neutral: <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
 };
 
 const toneColors = {
-  Friendly: "bg-gradient-to-br from-cyan-900 to-blue-900",
-  Professional: "bg-gradient-to-br from-indigo-900 to-blue-900",
-  Encouraging: "bg-gradient-to-br from-violet-900 to-purple-900",
-  Reassuring: "bg-gradient-to-br from-emerald-900 to-green-900",
-  Concise: "bg-gradient-to-br from-blue-900 to-indigo-900",
-  Festival: "bg-gradient-to-br from-pink-900 to-purple-900",
-  Natural: "bg-gradient-to-br from-teal-900 to-emerald-900",
-  Humorous: "bg-gradient-to-br from-amber-900 to-orange-900",
-  Technical: "bg-gradient-to-br from-slate-900 to-gray-900",
-  Urgent: "bg-gradient-to-br from-red-900 to-rose-900",
-  Neutral: "bg-gradient-to-br from-gray-900 to-slate-900"
+  Friendly: "bg-gradient-to-br from-cyan-50 to-blue-50 border-cyan-200",
+  Professional: "bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200",
+  Encouraging: "bg-gradient-to-br from-violet-50 to-purple-50 border-violet-200",
+  Reassuring: "bg-gradient-to-br from-emerald-50 to-green-50 border-emerald-200",
+  Concise: "bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200",
+  Festival: "bg-gradient-to-br from-pink-50 to-purple-50 border-pink-200",
+  Natural: "bg-gradient-to-br from-teal-50 to-emerald-50 border-teal-200",
+  Humorous: "bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200",
+  Technical: "bg-gradient-to-br from-slate-50 to-gray-50 border-slate-200",
+  Urgent: "bg-gradient-to-br from-red-50 to-rose-50 border-red-200",
+  Neutral: "bg-gradient-to-br from-gray-50 to-slate-50 border-gray-200"
 };
 
 const pulseAnimation = {
@@ -76,12 +77,17 @@ export default function LoadingTemplates() {
     isLoading,
     isSaving
   } = useTemplateStore();
+  const { incrementTotalCopies } = useDashboardStore();
+
 
   const copyToClipboard = (id, content) => {
     navigator.clipboard
       .writeText(content)
       .then(() => {
         setCopiedId(id);
+        if(session) {
+          incrementTotalCopies(session);
+        }
         setTimeout(() => setCopiedId(null), 2000);
       })
       .catch((err) => {
@@ -124,7 +130,7 @@ export default function LoadingTemplates() {
           key="all"
           variant={filter === "all" ? "default" : "outline"}
           onClick={() => setFilter("all")}
-          className="bg-blue-600 hover:bg-blue-700 text-white border-none"
+          className="bg-black text-white border-none"
         >
           All States
         </Button>
@@ -134,10 +140,10 @@ export default function LoadingTemplates() {
             variant={filter === tone ? "default" : "outline"}
             onClick={() => setFilter(tone)}
             className={cn(
-              "border-blue-500/20 text-blue-100 transition-all",
+              "border-black text-black transition-all",
               filter === tone
-                ? "bg-blue-600"
-                : "hover:border-blue-400"
+                ? "bg-black text-white"
+                : "hover:border-black/40"
             )}
           >
             {tone}
@@ -155,10 +161,10 @@ export default function LoadingTemplates() {
             exit={{ opacity: 0 }}
           >
             <div className="relative w-16 h-16 mx-auto">
-              <div className="absolute inset-0 animate-ping rounded-full bg-blue-400 opacity-25"></div>
-              <div className="relative animate-spin rounded-full border-4 border-blue-500 border-t-transparent w-full h-full"></div>
+              <div className="absolute inset-0 animate-ping rounded-full bg-black opacity-25"></div>
+              <div className="relative animate-spin rounded-full border-4 border-black border-t-transparent w-full h-full"></div>
             </div>
-            <p className="text-blue-200 mt-4">Loading templates...</p>
+            <p className="text-black mt-4">Loading templates...</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -195,16 +201,16 @@ export default function LoadingTemplates() {
               {/* Content */}
               <div className="space-y-4">
                 <div className="flex items-center space-x-2">
-                  <span className="text-blue-200 font-medium">{loading?.tone}</span>
+                  <span className="text-black font-medium">{loading?.tone}</span>
                 </div>
 
-                <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4">
-                  <p className="text-white text-lg">
+                <div className="bg-black/5 backdrop-blur-sm rounded-lg p-4">
+                  <p className="text-black text-lg">
                     {loading?.content}
                   </p>
                 </div>
 
-                <div className="text-sm text-blue-200 opacity-80">
+                <div className="text-sm text-black opacity-80">
                   {loading?.context}
                 </div>
 
@@ -213,7 +219,7 @@ export default function LoadingTemplates() {
                   <Button
                     onClick={() => toggleSave(loading)}
                     variant="ghost"
-                    className="text-blue-200 hover:text-white hover:bg-white/10"
+                    className="text-black hover:text-black/80 hover:bg-white/10"
                     disabled={isSaving}
                   >
                     <Star className={cn(
@@ -226,7 +232,7 @@ export default function LoadingTemplates() {
                   <Button
                     onClick={() => copyToClipboard(loading?.id, loading?.content)}
                     variant="ghost"
-                    className="text-blue-200 hover:text-white hover:bg-white/10"
+                    className="text-black hover:text-black/80 hover:bg-white/10"
                     disabled={isSaving}
                   >
                     {copiedId === loading?.id ? (

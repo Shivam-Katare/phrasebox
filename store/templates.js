@@ -150,7 +150,7 @@ const useTemplateStore = create((set, get) => {
         .eq('item_id', itemId);
 
       if (error) {
-        console.error('Error deleting saved microcopy:', error);
+        toast.error('Error deleting saved microcopy. Please try again.');
         return null;
       }
 
@@ -158,9 +158,10 @@ const useTemplateStore = create((set, get) => {
         savedMicrocopies: state.savedMicrocopies.filter((item) => item.item_id !== itemId),
       }));
 
+      toast.success('Microcopy deleted successfully');
       return true;
     } catch (err) {
-      toast.error('Error deleting saved microcopy');
+      toast.error('Error deleting microcopy. Please try again.');
       return null;
     } finally {
       set({ isSaving: false });
