@@ -3,7 +3,7 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 export function HeroSection() {
   return (
-    <section className="container px-4 pt-24 md:pt-32 pb-12 md:pb-20">
+    <section className="px-4 pt-24 md:pt-32 pb-12 md:pb-20">
       <div className="flex flex-col items-center text-center space-y-8">
         <div className="rounded-full bg-muted px-4 py-1.5">
           <span className="text-sm font-medium">Seamless UX, starts here.</span>
@@ -20,7 +20,7 @@ export function HeroSection() {
         <div className="flex flex-col sm:flex-row gap-4 min-[400px]:gap-6">
           <SignedOut>
             <SignInButton mode="modal">
-              <Button variant="default" ize="lg" className="text-base rounded-[6px]">
+              <Button variant="default" size="lg" className="text-base rounded-[6px]">
                 Start writing better UX
               </Button>
             </SignInButton>

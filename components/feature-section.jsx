@@ -3,7 +3,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="container px-4 py-16 md:py-24">
+    <section id="features" className="px-4 py-16 md:py-24">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">Everything you need for perfect microcopy</h2>
       </div>

@@ -15,7 +15,7 @@ const ComparisonItem = ({ best, worst }) => (
 
 export function ComparisonSection() {
   return (
-    <section id="comparison" className="container px-4 py-16 md:py-24">
+    <section id="comparison" className="px-4 py-16 md:py-24">
       <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Best UX vs Worst UX: Text on a Landing Page</h2>
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-col sm:flex-row mb-4">

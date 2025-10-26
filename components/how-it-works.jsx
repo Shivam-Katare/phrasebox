@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="container px-4 py-16 md:py-24 bg-slate-50">
+    <section id="how-it-works" className="px-4 py-16 md:py-24 bg-slate-50">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">How 
           <span className="bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent mr-2 ml-2">
